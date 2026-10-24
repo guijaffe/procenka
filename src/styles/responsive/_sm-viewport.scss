@@ -1,0 +1,65 @@
+@use '../spacing' as *;
+@use '../breakpoints' as bp;
+
+@include bp.up(sm) {
+  .search-intro__title {
+    font-size: 32px;
+  }
+
+  .page-container {
+    padding-inline: $spacer-6;
+  }
+
+  .site-header__label {
+    max-width: none;
+    font-size: 13px;
+  }
+
+  .search-panel {
+    padding: $spacer-6;
+  }
+
+  .search-intro__eyebrow {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+  }
+
+  .search-intro__description {
+    font-size: 16px;
+  }
+
+  .search-form__controls {
+    flex-direction: row;
+  }
+
+  .part-card__summary {
+    flex-wrap: nowrap;
+    gap: $spacer-4;
+  }
+
+  .part-card__identity {
+    flex-basis: 0;
+  }
+
+  .part-card__meta {
+    order: 0;
+    flex-basis: auto;
+  }
+
+  .part-card__toggle {
+    margin-left: 0;
+  }
+
+  .results-pagination__label {
+    order: 0;
+    width: auto;
+  }
+
+  .stock-table .stock-table__heading {
+    padding: $spacer-3 $spacer-4;
+  }
+
+  .stock-table .stock-table__cell {
+    padding: $spacer-5 $spacer-4;
+  }
+}

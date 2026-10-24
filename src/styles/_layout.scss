@@ -1,0 +1,78 @@
+@use 'spacing' as *;
+@use 'variables' as *;
+
+.page-container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: $spacer-3;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 20px;
+  z-index: 10;
+  padding: $spacer-3;
+  background: white;
+  &:focus {
+    top: 12px;
+  }
+}
+
+.site-header {
+  background: white;
+  border-bottom: 1px solid $color-border;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  gap: $spacer-4;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  color: $color-text;
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+}
+
+.site-logo__mark {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-right: $spacer-3;
+}
+
+.site-logo__dot {
+  color: #558028;
+}
+
+.site-header__label {
+  max-width: 100px;
+  text-align: right;
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacer-5;
+  border-top: 1px solid $color-border;
+  padding-top: $spacer-6;
+  padding-bottom: $spacer-6;
+  color: $color-text-muted;
+  font-size: 12px;
+}
+
+.site-footer__brand {
+  font-weight: 700;
+  color: $color-text;
+}

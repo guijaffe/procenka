@@ -1,0 +1,16 @@
+@use '../spacing' as *;
+@use '../breakpoints' as bp;
+
+@include bp.up(xl) {
+  .search-intro__title {
+    font-size: 40px;
+  }
+
+  .page-container {
+    padding-inline: $spacer-8;
+  }
+
+  .search-panel_results {
+    padding: $spacer-7;
+  }
+}

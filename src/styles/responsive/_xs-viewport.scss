@@ -1,0 +1,12 @@
+@use '../spacing' as *;
+@use '../breakpoints' as bp;
+
+@include bp.up(xs) {
+  .page-container {
+    padding-inline: $spacer-4;
+  }
+
+  .search-panel {
+    padding: $spacer-5;
+  }
+}

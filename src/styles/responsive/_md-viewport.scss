@@ -1,0 +1,19 @@
+@use '../breakpoints' as bp;
+
+@include bp.up(md) {
+  .brand-select__option {
+    grid-template-columns: 200px 1fr 140px;
+  }
+
+  .search-intro__title {
+    font-size: 36px;
+  }
+
+  .site-header__inner {
+    min-height: 88px;
+  }
+
+  .search-intro__break {
+    display: block;
+  }
+}

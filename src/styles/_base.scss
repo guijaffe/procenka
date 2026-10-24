@@ -1,0 +1,32 @@
+@use 'variables' as *;
+
+body {
+  margin: 0;
+  background: #f6f8f5;
+  color: $color-text;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input,
+a {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid $color-focus;
+  outline-offset: 2px;
+}
+
+.form-control,
+.form-select {
+  &:focus {
+    border-color: $color-focus;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 0;
+  }
+}

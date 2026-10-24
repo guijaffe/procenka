@@ -1,0 +1,142 @@
+@use 'spacing' as *;
+@use 'variables' as *;
+
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -0.125em;
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacer-2;
+  min-height: 44px;
+  padding: $spacer-3 $spacer-4;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.ui-button_primary {
+  color: #fff;
+  background: $color-text;
+}
+
+.ui-button_primary:hover:not(:disabled) {
+  background: #28574c;
+}
+
+.ui-button_secondary {
+  color: $color-text;
+  background: #fff;
+  border-color: #cbd5ce;
+}
+
+.ui-button_secondary:hover:not(:disabled) {
+  background: #eef4eb;
+  border-color: #8caa99;
+}
+
+.ui-button_text {
+  padding: $spacer-2;
+  background: transparent;
+  color: $color-text-muted;
+  font-size: 12px;
+}
+
+.ui-button_text:hover:not(:disabled) {
+  background: #eef4eb;
+  color: $color-text;
+}
+
+.ui-button:active:not(:disabled) {
+  background: $color-accent;
+  color: $color-text;
+}
+
+.ui-button:disabled {
+  color: #6b756e;
+  background: #eef1ed;
+  border-color: $color-border;
+  cursor: not-allowed;
+}
+
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: $spacer-1 $spacer-2;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+.ui-badge_neutral {
+  background: #eef2ed;
+  color: #596a60;
+}
+
+.ui-badge_success {
+  background: #e8f3df;
+  color: #2d613d;
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: $spacer-3;
+  padding-bottom: $spacer-6;
+  margin-bottom: $spacer-6;
+  border-bottom: 1px solid $color-border;
+}
+
+.section-header__step {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: #ecf3e7;
+  color: #496a52;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.section-header__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-header__title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin: $spacer-half 0 $spacer-2;
+}
+
+.section-header__description {
+  color: $color-text-muted;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.section-header__aside {
+  flex-basis: 100%;
+  padding-left: $spacer-10;
+}

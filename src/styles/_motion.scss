@@ -1,0 +1,11 @@
+@media (prefers-reduced-motion: reduce) {
+  .ui-button,
+  .brand-select__option,
+  .part-card__toggle {
+    transition: none;
+  }
+
+  .request-status .spinner-border {
+    animation: none;
+  }
+}

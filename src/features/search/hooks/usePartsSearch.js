@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { brandSelected, numberChanged, searchParts } from '../searchSlice';
 
@@ -8,24 +8,36 @@ export default function usePartsSearch() {
   const { number, brand, brands, offers, status, error, errorCode } = useSelector((state) => state.search);
   const requestRef = useRef(null);
 
-  const restoreSearch = async () => {
+  const restoreSearch = useCallback(async () => {
     requestRef.current?.abort();
+    requestRef.current = null;
     const params = new URLSearchParams(window.location.search);
-    const number = params.get('number')?.trim() || '';
-    const brand = params.get('brand') || '';
-    if (store.getState().search.number === number) dispatch(brandSelected(''));
-    else dispatch(numberChanged(number));
-    if (!number) return;
+    const urlNumber = params.get('number')?.trim() || '';
+    const urlBrand = params.get('brand') || '';
+    const current = store.getState().search;
+    if (urlBrand && current.number === urlNumber && current.brands.some((item) => item.brand === urlBrand)) {
+      dispatch(brandSelected(urlBrand));
+      requestRef.current = dispatch(searchParts({ number: urlNumber, brand: urlBrand }));
+      return;
+    }
+    if (current.number === urlNumber) dispatch(brandSelected(''));
+    else dispatch(numberChanged(urlNumber));
+    if (!urlNumber) return;
 
-    const request = dispatch(searchParts({ number }));
+    const request = dispatch(searchParts({ number: urlNumber }));
     requestRef.current = request;
     const result = await request;
-    if (requestRef.current !== request || !searchParts.fulfilled.match(result)) return;
-    if (brand) {
-      dispatch(brandSelected(brand));
-      requestRef.current = dispatch(searchParts({ number, brand }));
+    if (requestRef.current !== request || !searchParts.fulfilled.match(result) || !urlBrand) return;
+
+    if (!result.payload.some((item) => item.brand === urlBrand)) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('brand');
+      window.history.replaceState(null, '', url);
+      return;
     }
-  };
+    dispatch(brandSelected(urlBrand));
+    requestRef.current = dispatch(searchParts({ number: urlNumber, brand: urlBrand }));
+  }, [dispatch, store]);
 
   useEffect(() => {
     restoreSearch();
@@ -34,15 +46,20 @@ export default function usePartsSearch() {
       requestRef.current?.abort();
       window.removeEventListener('popstate', restoreSearch);
     };
-  }, [dispatch, store]);
+  }, [restoreSearch]);
 
   const navigate = (selectedBrand = '') => {
     const url = new URL(window.location.href);
-    url.search = new URLSearchParams({ number: number.trim(), ...(selectedBrand ? { brand: selectedBrand } : {}) });
+    url.search = new URLSearchParams({
+      number: number.trim(),
+      ...(selectedBrand ? { brand: selectedBrand } : {}),
+    });
     url.hash = '';
     if (url.href !== window.location.href) {
       const previous = new URLSearchParams(window.location.search);
-      const fromBrands = Boolean(selectedBrand && !previous.get('brand') && previous.get('number') === number.trim());
+      const fromBrands = Boolean(
+        selectedBrand && !previous.get('brand') && previous.get('number') === number.trim(),
+      );
       window.history.pushState({ fromBrands }, '', url);
     }
     restoreSearch();

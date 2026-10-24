@@ -2,10 +2,6 @@
 @use '../breakpoints' as bp;
 
 @include bp.up(sm) {
-  .search-intro__title {
-    font-size: 32px;
-  }
-
   .page-container {
     padding-inline: $spacer-6;
   }
@@ -60,6 +56,6 @@
   }
 
   .stock-table .stock-table__cell {
-    padding: $spacer-5 $spacer-4;
+    padding: $spacer-3 $spacer-4;
   }
 }

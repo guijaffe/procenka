@@ -11,7 +11,7 @@ export function groupOffers(offers) {
       product.totalStock += offer.stock ?? 0;
     }
   });
-for (const product of products.values()) {
+  for (const product of products.values()) {
     product.warehouses.sort((a, b) => (b.stock ?? -1) - (a.stock ?? -1));
   }
   return [...products.values()].sort(

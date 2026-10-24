@@ -158,15 +158,6 @@
   background: #e4edda;
 }
 
-.brand-select__option_selected {
-  background: #eaf3df;
-  box-shadow: inset 3px 0 0 #75986f;
-}
-
-.brand-select__option_selected:hover {
-  background: #dce9cb;
-}
-
 .brand-select__option:focus-visible {
   outline-offset: -2px;
 }
@@ -211,6 +202,3 @@
   background: #fafbf8;
 }
 
-.search-intro__break {
-  display: none;
-}

@@ -8,8 +8,19 @@ import StatusMessage from '../components/StatusMessage/StatusMessage';
 import SearchResults from '../components/SearchResults/SearchResults';
 
 export default function App() {
-  const { number, brand, brands, offers, status, error, retry, submitSearch, changeNumber, selectBrand, backToBrands } =
-    usePartsSearch();
+  const {
+    number,
+    brand,
+    brands,
+    offers,
+    status,
+    error,
+    retry,
+    submitSearch,
+    changeNumber,
+    selectBrand,
+    backToBrands,
+  } = usePartsSearch();
   const warehouseCount = offers.filter((offer) => offer.hasWarehouse).length;
   return (
     <>
@@ -34,8 +45,7 @@ export default function App() {
             <span className='search-intro__accent'>Подходящее предложение.</span>
           </h1>
           <p className='search-intro__description'>
-            Введите артикул, выберите производителя и сравните
-            <br className='search-intro__break' /> цены и наличие оригинальной детали и аналогов.
+            Введите артикул, выберите производителя и сравните цены и наличие оригинальной детали и аналогов.
           </p>
         </div>
         <div className='search-workspace'>
@@ -69,10 +79,7 @@ export default function App() {
                   maxLength={100}
                   aria-describedby='search-help'
                 />
-                <Button
-                  type='submit'
-                  disabled={!number.trim() || status === 'loading'}
-                >
+                <Button type='submit' disabled={!number.trim() || status === 'loading'}>
                   <Icon name='search' />
                   Найти
                 </Button>
@@ -91,11 +98,20 @@ export default function App() {
                 Найдено производителей: {brands.length}. Выберите производителя.
               </p>
             )}
-            {brands.length > 0 && <BrandSelect key={number} brands={brands} number={number.trim()} value={brand} onChange={selectBrand} onBack={backToBrands} />}
+            {brands.length > 0 && (
+              <BrandSelect
+                key={number}
+                brands={brands}
+                number={number.trim()}
+                value={brand}
+                onChange={selectBrand}
+                onBack={backToBrands}
+              />
+            )}
           </section>
           {brand && (
             <section
-              className='search-panel search-panel_results'
+              className='search-panel'
               aria-labelledby='offers-title'
               aria-busy={status === 'loading'}
             >
@@ -105,7 +121,7 @@ export default function App() {
                 title='Предложения и аналоги'
                 description={`${brand} · ${number.trim()}`}
               >
-                {status === 'success' && <Badge>{warehouseCount} предложений складов</Badge>}
+                {status === 'success' && <Badge>Предложений складов: {warehouseCount}</Badge>}
               </SectionHeader>
               {status === 'loading' && (
                 <StatusMessage loading>Загружаем предложения и аналоги…</StatusMessage>

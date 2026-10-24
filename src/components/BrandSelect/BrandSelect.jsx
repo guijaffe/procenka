@@ -16,12 +16,15 @@ export default function BrandSelect({ brands, number, value, onChange, onBack })
   return (
     <section className='brand-select' aria-label='Выбор производителя'>
       {!showList && (
-        <Button variant='text' className='brand-select__back' onClick={() => {
-          interacted.current = true;
-          onBack();
-        }}>
-          <Icon name='arrow-left' />
-          К списку производителей
+        <Button
+          variant='text'
+          className='brand-select__back'
+          onClick={() => {
+            interacted.current = true;
+            onBack();
+          }}
+        >
+          <Icon name='arrow-left' />К списку производителей
         </Button>
       )}
       <h3 className='brand-select__title' ref={headingRef} tabIndex={-1}>
@@ -30,14 +33,15 @@ export default function BrandSelect({ brands, number, value, onChange, onBack })
       </h3>
       {showList ? (
         <>
-          <p className='brand-select__hint'>Одинаковый артикул может относиться к разным деталям. Сверьте название.</p>
+          <p className='brand-select__hint'>
+            Одинаковый артикул может относиться к разным деталям. Сверьте название.
+          </p>
           <ul className='brand-select__list'>
             {brands.map((item) => (
               <li key={item.brand} className='brand-select__item'>
                 <button
                   type='button'
-                  className={`brand-select__option${value === item.brand ? ' brand-select__option_selected' : ''}`}
-                  aria-pressed={value === item.brand}
+                  className='brand-select__option'
                   onClick={() => {
                     interacted.current = true;
                     onChange(item.brand);
@@ -47,8 +51,12 @@ export default function BrandSelect({ brands, number, value, onChange, onBack })
                     <span className='brand-select__name'>{item.brand}</span>
                     <span className='brand-select__number'>Артикул: {number}</span>
                   </span>
-                  <span className='brand-select__description'>{item.names.join(' · ') || 'Название не указано'}</span>
-                  <span className='brand-select__action'>Цена и аналоги <Icon name='arrow-right' /></span>
+                  <span className='brand-select__description'>
+                    {item.names.join(' · ') || 'Название не указано'}
+                  </span>
+                  <span className='brand-select__action'>
+                    Цена и аналоги <Icon name='arrow-right' />
+                  </span>
                 </button>
               </li>
             ))}
@@ -56,7 +64,9 @@ export default function BrandSelect({ brands, number, value, onChange, onBack })
         </>
       ) : (
         <div>
-          <strong className='brand-select__name'>{selected.brand} · {number}</strong>
+          <strong className='brand-select__name'>
+            {selected.brand} · {number}
+          </strong>
           <p className='brand-select__description'>{selected.names.join(' · ') || 'Название не указано'}</p>
         </div>
       )}

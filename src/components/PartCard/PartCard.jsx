@@ -11,7 +11,11 @@ export default function PartCard({ product }) {
   const unavailable = product.warehouses.length
     ? product.warehouses.every((offer) => offer.stock === 0)
     : product.stock === 0;
-  const label = available.length ? 'В наличии на складе' : unavailable ? 'Нет в наличии' : 'Наличие не подтверждено';
+  const label = available.length
+    ? 'В наличии на складе'
+    : unavailable
+      ? 'Нет в наличии'
+      : 'Наличие не подтверждено';
   return (
     <details className='part-card' onToggle={(event) => setIsOpen(event.currentTarget.open)}>
       <summary className='part-card__summary'>
@@ -25,6 +29,9 @@ export default function PartCard({ product }) {
           {available.length > 0 && (
             <strong>{prices.length ? `от ${money.format(Math.min(...prices))}` : 'Цена не указана'}</strong>
           )}
+          {product.totalStock > 0 && (
+            <span className='part-card__stock'>Остаток: {product.totalStock} шт.</span>
+          )}
           <span className='part-card__warehouse-count'>
             {product.warehouses.length
               ? `Предложения складов: ${product.warehouses.length}`
@@ -33,8 +40,8 @@ export default function PartCard({ product }) {
         </span>
         <Icon name='chevron-down' className='part-card__toggle' />
       </summary>
-      {isOpen && (
-        product.warehouses.length ? (
+      {isOpen &&
+        (product.warehouses.length ? (
           <div className='stock-table'>
             <table className='table align-middle mb-0 stock-table__table'>
               <caption className='visually-hidden'>
@@ -70,8 +77,7 @@ export default function PartCard({ product }) {
                       {offer.price === null ? 'Не указана' : money.format(offer.price)}
                     </td>
                   </tr>
-                  )
-        )}
+                ))}
               </tbody>
             </table>
           </div>
@@ -80,8 +86,7 @@ export default function PartCard({ product }) {
             Сервис не вернул складских предложений для этой детали.
             {product.stock === 0 ? ' Остаток: 0 шт.' : ''}
           </p>
-        )
-      )}
+        ))}
     </details>
   );
 }

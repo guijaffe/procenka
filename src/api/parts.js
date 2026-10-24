@@ -42,6 +42,16 @@ export function normalizeGoods(payload) {
   return validGoods;
 }
 
+export function getBrands(goods) {
+  const brands = new Map();
+  for (const item of goods) {
+    if (!brands.has(item.brand)) brands.set(item.brand, { brand: item.brand, names: [] });
+    const names = brands.get(item.brand).names;
+    if (item.name && !names.includes(item.name)) names.push(item.name);
+  }
+  return [...brands.values()].sort((a, b) => a.brand.localeCompare(b.brand));
+}
+
 export function getOffers(goods) {
   const seen = new Set();
   const originalIds = new Set(goods.map((item) => JSON.stringify([item.goodsID || item.number, item.brand])));
@@ -78,6 +88,15 @@ export function getOffers(goods) {
     .filter(Boolean);
 }
 
+function toRequestError(error, signal, timeout) {
+  if (signal.aborted) return error;
+  if (timeout.aborted) return new Error('Сервис не ответил за 15 секунд. Повторите поиск.');
+  if (error instanceof TypeError)
+    return new Error('Не удалось подключиться к сервису. Проверьте сеть и доступность API (CORS).');
+  if (error instanceof SyntaxError) return new Error('Сервис вернул некорректный ответ. Повторите поиск позже.');
+  return error;
+}
+
 export async function fetchParts({ number, brand }, signal) {
   const key = import.meta.env.VITE_FAVORIT_API_KEY;
   if (!key)
@@ -90,25 +109,21 @@ export async function fetchParts({ number, brand }, signal) {
   if (cached && cached.expiresAt > Date.now()) return cached.goods;
   responseCache.delete(cacheKey);
   const timeout = AbortSignal.timeout(15000);
+  let response;
+  let payload;
   try {
-    const response = await fetch(url, { signal: AbortSignal.any([signal, timeout]) });
-    if (!response.ok) {
-      const payload = await response.json().catch(() => null);
-      if (payload?.error) throw createApiError(payload.error);
-      throw new Error(`Сервис недоступен (HTTP ${response.status}). Попробуйте позже.`);
-    }
-    const goods = normalizeGoods(await response.json());
-    signal.throwIfAborted();
-    if (responseCache.size >= CACHE_LIMIT) responseCache.delete(responseCache.keys().next().value);
-    responseCache.set(cacheKey, { goods, expiresAt: Date.now() + CACHE_TTL });
-    return goods;
+    response = await fetch(url, { signal: AbortSignal.any([signal, timeout]) });
+    payload = response.ok ? await response.json() : await response.json().catch(() => null);
   } catch (error) {
-    if (signal.aborted) throw error;
-    if (timeout.aborted) throw new Error('Сервис не ответил за 15 секунд. Повторите поиск.');
-    if (error instanceof TypeError)
-      throw new Error('Не удалось подключиться к сервису. Проверьте сеть и доступность API (CORS).');
-    if (error instanceof SyntaxError)
-      throw new Error('Сервис вернул некорректный ответ. Повторите поиск позже.');
-    throw error;
+    throw toRequestError(error, signal, timeout);
   }
+  if (!response.ok) {
+    if (payload?.error) throw createApiError(payload.error);
+    throw new Error(`Сервис недоступен (HTTP ${response.status}). Попробуйте позже.`);
+  }
+  const goods = normalizeGoods(payload);
+  signal.throwIfAborted();
+  if (responseCache.size >= CACHE_LIMIT) responseCache.delete(responseCache.keys().next().value);
+  responseCache.set(cacheKey, { goods, expiresAt: Date.now() + CACHE_TTL });
+  return goods;
 }

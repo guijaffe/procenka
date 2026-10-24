@@ -65,13 +65,20 @@ it('keeps requested products in the original group even if also returned as anal
 
 it('keeps unique names for each manufacturer without requesting offers', () => {
   let state = reducer(undefined, searchParts.pending('brands', { number: '01089' }));
-  state = reducer(state, searchParts.fulfilled([
-    { brand: 'B', name: 'Фильтр' },
-    { brand: 'A', name: 'Прокладка' },
-    { brand: 'B', name: 'Фильтр' },
-    { brand: 'B', name: 'Фильтр топливный' },
-    { brand: 'C' },
-  ], 'brands', { number: '01089' }));
+  state = reducer(
+    state,
+    searchParts.fulfilled(
+      [
+        { brand: 'B', name: 'Фильтр' },
+        { brand: 'A', name: 'Прокладка' },
+        { brand: 'B', name: 'Фильтр' },
+        { brand: 'B', name: 'Фильтр топливный' },
+        { brand: 'C' },
+      ],
+      'brands',
+      { number: '01089' },
+    ),
+  );
   expect(state.brands).toEqual([
     { brand: 'A', names: ['Прокладка'] },
     { brand: 'B', names: ['Фильтр', 'Фильтр топливный'] },

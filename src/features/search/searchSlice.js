@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchParts, getOffers } from '../../api/parts';
+import { fetchParts, getBrands, getOffers } from '../../api/parts';
 
 export const searchParts = createAsyncThunk('search/fetch', (params, { signal }) =>
   fetchParts(params, signal),
@@ -40,15 +40,7 @@ const searchSlice = createSlice({
         if (state.requestId !== action.meta.requestId) return;
         state.status = 'success';
         if (action.meta.arg.brand) state.offers = getOffers(action.payload);
-        else {
-          const brands = new Map();
-          for (const item of action.payload) {
-            if (!brands.has(item.brand)) brands.set(item.brand, { brand: item.brand, names: [] });
-            const names = brands.get(item.brand).names;
-            if (item.name && !names.includes(item.name)) names.push(item.name);
-          }
-          state.brands = [...brands.values()].sort((a, b) => a.brand.localeCompare(b.brand));
-        }
+        else state.brands = getBrands(action.payload);
       })
       .addCase(searchParts.rejected, (state, action) => {
         if (state.requestId !== action.meta.requestId) return;

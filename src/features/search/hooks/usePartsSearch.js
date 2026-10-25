@@ -72,10 +72,11 @@ export default function usePartsSearch() {
     offers,
     status,
     error,
+    inputError: errorCode === 'INVALID_NUMBER' ? error : '',
     submitSearch: () => {
       if (number.trim() && status !== 'loading') navigate();
     },
-    retry: errorCode === 'QUOTA_EXCEEDED' ? undefined : restoreSearch,
+    retry: ['QUOTA_EXCEEDED', 'INVALID_NUMBER'].includes(errorCode) ? undefined : restoreSearch,
     changeNumber: (value) => {
       requestRef.current?.abort();
       requestRef.current = null;

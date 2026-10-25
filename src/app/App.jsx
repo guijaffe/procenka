@@ -15,6 +15,7 @@ export default function App() {
     offers,
     status,
     error,
+    inputError,
     retry,
     submitSearch,
     changeNumber,
@@ -77,7 +78,8 @@ export default function App() {
                   autoComplete='off'
                   spellCheck={false}
                   maxLength={100}
-                  aria-describedby='search-help'
+                  aria-invalid={Boolean(inputError)}
+                  aria-describedby={inputError ? 'search-help search-error' : 'search-help'}
                 />
                 <Button type='submit' disabled={!number.trim() || status === 'loading'}>
                   <Icon name='search' />
@@ -87,9 +89,12 @@ export default function App() {
               <p id='search-help' className='search-form__help'>
                 Введите артикул и нажмите «Найти» или Enter.
               </p>
+              {inputError && (
+                <p id='search-error' className='search-form__error' role='alert'>{inputError}</p>
+              )}
             </form>
             {!brand && status === 'loading' && <StatusMessage loading>Ищем производителей…</StatusMessage>}
-            {!brand && error && <StatusMessage error={error} onRetry={retry} />}
+            {!brand && error && !inputError && <StatusMessage error={error} onRetry={retry} />}
             {!brand && status === 'success' && !brands.length && (
               <StatusMessage>Производители не найдены. Проверьте артикул и попробуйте ещё раз.</StatusMessage>
             )}
@@ -126,7 +131,7 @@ export default function App() {
               {status === 'loading' && (
                 <StatusMessage loading>Загружаем предложения и аналоги…</StatusMessage>
               )}
-              {error && <StatusMessage error={error} onRetry={retry} />}
+              {error && !inputError && <StatusMessage error={error} onRetry={retry} />}
               {status === 'success' && (
                 <>
                   {offers.length > 0 && (

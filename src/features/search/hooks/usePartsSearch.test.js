@@ -75,3 +75,17 @@ it('removes an unknown manufacturer from a direct URL without requesting offers'
   expect(context.store.getState().search.brand).toBe('');
   cleanup();
 });
+
+it('rejects punctuation-only input without calling the API', async () => {
+  const result = await context.store.dispatch(searchParts({ number: ' -/# ' }));
+  expect(result.error.code).toBe('INVALID_NUMBER');
+  expect(fetchParts).not.toHaveBeenCalled();
+});
+
+it('allows letters, digits and separators in part numbers', async () => {
+  for (const number of ['099-933', 'A/B#12', 'Meat & Doria 1']) {
+    const result = await context.store.dispatch(searchParts({ number }));
+    expect(searchParts.fulfilled.match(result)).toBe(true);
+  }
+  expect(fetchParts).toHaveBeenCalledTimes(3);
+});

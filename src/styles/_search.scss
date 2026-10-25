@@ -82,6 +82,7 @@
 }
 
 .request-status__retry {
+  display: flex;
   margin: $spacer-3 0 0;
 }
 
@@ -202,3 +203,9 @@
   background: #fafbf8;
 }
 
+
+.search-form__error {
+  margin: $spacer-2 0 0;
+  color: #9a302e;
+  font-size: 13px;
+}

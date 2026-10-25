@@ -13,6 +13,7 @@ const CACHE_LIMIT = 10;
 function createApiError(error) {
   const message = String(error);
   const result = new Error(API_ERRORS[message] || message);
+  if (message === 'Empty number goods!') result.code = 'INVALID_NUMBER';
   if (message === 'Request quota exceeded!') result.code = 'QUOTA_EXCEEDED';
   return result;
 }

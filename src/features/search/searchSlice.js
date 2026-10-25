@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchParts, getBrands, getOffers } from '../../api/parts';
 
-export const searchParts = createAsyncThunk('search/fetch', (params, { signal }) =>
-  fetchParts(params, signal),
-);
+export const searchParts = createAsyncThunk('search/fetch', (params, { signal }) => {
+  if (!/[\p{L}\p{N}]/u.test(params.number)) {
+    const error = new Error('Введите артикул, содержащий хотя бы одну букву или цифру.');
+    error.code = 'INVALID_NUMBER';
+    throw error;
+  }
+  return fetchParts(params, signal);
+});
 const initialState = {
   number: '',
   brand: '',

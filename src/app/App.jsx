@@ -29,8 +29,8 @@ export default function App() {
       </a>
       <header className='site-header'>
         <div className='page-container site-header__inner'>
-          <a href='/' className='site-logo' aria-label='Проценка — главная'>
-            <img className='site-logo__mark' src='/favicon.svg' width='36' height='36' alt='' />
+          <a href={import.meta.env.BASE_URL} className='site-logo' aria-label='Проценка — главная'>
+            <img className='site-logo__mark' src={`${import.meta.env.BASE_URL}favicon.svg`} width='36' height='36' alt='' />
             Проценка<span className='site-logo__dot'>.</span>
           </a>
           <span className='site-header__label'>Поиск автозапчастей</span>

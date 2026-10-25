@@ -101,7 +101,7 @@ export async function fetchParts({ number, brand }, signal) {
   const key = import.meta.env.VITE_FAVORIT_API_KEY;
   if (!key)
     throw new Error('Для поиска нужен клиентский API-ключ. Укажите его в .env и перезапустите приложение.');
-  const url = new URL(import.meta.env.VITE_FAVORIT_API_URL || 'http://api.favorit-parts.ru/hs/hsprice/');
+  const url = new URL(import.meta.env.VITE_FAVORIT_API_URL || 'https://api.favorit-parts.ru/hs/hsprice/');
   url.search = new URLSearchParams({ key, number, ...(brand ? { brand, analogues: 'on' } : {}) });
   signal.throwIfAborted();
   const cacheKey = url.href;
